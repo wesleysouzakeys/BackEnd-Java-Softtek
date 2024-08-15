@@ -1,13 +1,15 @@
 package Models;
 
-public class Chamado {
-    private static int contador = 0;
-    private int idChamado;
-    private String descricao;
-    private Usuario usuario;
-    private String solucao;
+import Controllers.UsuarioController;
 
-    public Chamado(String descricao, Usuario usuario) {
+public class Chamado {
+    protected static int contador = 0;
+    protected int idChamado;
+    protected String descricao;
+    protected UsuarioController usuario;
+    protected String solucao;
+
+    public Chamado(String descricao, UsuarioController usuario) {
         this.idChamado = ++contador;
         this.descricao = descricao;
         this.usuario = usuario;
@@ -21,7 +23,7 @@ public class Chamado {
         return descricao;
     }
 
-    public Usuario getUsuario() {
+    public UsuarioController getUsuario() {
         return usuario;
     }
 

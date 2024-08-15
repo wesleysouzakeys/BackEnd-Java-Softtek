@@ -1,11 +1,12 @@
 import java.util.Scanner;
-import Models.Usuario;
-import Models.Chamado;
+
+import Controllers.ChamadoController;
+import Controllers.UsuarioController;
 
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        Usuario usuario = new Usuario("Nome", "email@example.com", "senha123");
+        UsuarioController usuario = new UsuarioController("Nome", "email@example.com", "senha123");
 
         System.out.println("Digite seu email:");
         String email = scanner.nextLine();
@@ -13,7 +14,9 @@ public class Main {
         String senha = scanner.nextLine();
 
         if (usuario.logar(email, senha)) {
+            limpaTerminal();
             System.out.println("Login realizado com sucesso!");
+            pulaLinha();
 
             while (true) {
                 System.out.println("Escolha uma opção:");
@@ -25,7 +28,8 @@ public class Main {
                 String input = scanner.nextLine();
 
                 // Validação da opção
-                while (!isValidOption(input)) {
+                while (!isOpcaoValida(input)) {
+                    limpaTerminal();
                     System.out.println("Opção inválida. Por favor, escolha uma opção válida (1, 2 ou 3):");
                     input = scanner.nextLine();
                 }
@@ -33,11 +37,26 @@ public class Main {
                 int opcao = Integer.parseInt(input);
 
                 if (opcao == 1) {
-                    System.out.println("Abrindo chamado...");
-                    // Lógica para abrir chamado
+                    pulaLinha();
+                    System.out.print("Digite a descrição do chamado: ");
+                    String descricao = scanner.nextLine();
+                    usuario.abrirChamado(descricao);
+                    limpaTerminal();
+                    System.out.println("Chamado aberto com sucesso!");
                 } else if (opcao == 2) {
-                    System.out.println("Listando chamados...");
-                    // Lógica para listar chamados
+                    limpaTerminal();
+                    System.out.println("Lista de Chamados:");
+                    if (usuario.obterChamados().isEmpty()) {
+                        System.out.println("Nenhum chamado encontrado.");
+                        System.out.println("");
+                        continue;
+                    } else {
+                        for (ChamadoController chamado : usuario.obterChamados()) {
+                            System.out.println(
+                                    "ID: " + chamado.getIdChamado() + ", Descrição: " + chamado.getDescricao());
+                        }
+                        pulaLinha();
+                    }
                 } else if (opcao == 3) {
                     System.out.println("Saindo...");
                     break;
@@ -49,12 +68,20 @@ public class Main {
         scanner.close();
     }
 
-    private static boolean isValidOption(String input) {
+    private static boolean isOpcaoValida(String input) {
         try {
             int opcao = Integer.parseInt(input);
             return opcao >= 1 && opcao <= 3;
         } catch (NumberFormatException e) {
             return false;
         }
+    }
+
+    private static void limpaTerminal() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+    private static void pulaLinha() {
+        System.out.println("");
     }
 }

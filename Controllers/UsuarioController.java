@@ -1,15 +1,15 @@
-package Models;
+package Controllers;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Usuario {
+public class UsuarioController {
     private String nome;
     private String email;
     private String senha;
-    private List<Chamado> chamados;
+    private List<ChamadoController> chamados;
 
-    public Usuario(String nome, String email, String senha) {
+    public UsuarioController(String nome, String email, String senha) {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
@@ -33,11 +33,11 @@ public class Usuario {
     }
 
     public void abrirChamado(String descricao) {
-        Chamado chamado = new Chamado(descricao, this);
+        ChamadoController chamado = new ChamadoController(descricao, this);
         chamados.add(chamado);
     }
 
-    public List<Chamado> obterChamados() {
+    public List<ChamadoController> obterChamados() {
         return chamados;
     }
 }
